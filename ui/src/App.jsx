@@ -1,30 +1,41 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
-import LoginForm from './pages/Login.jsx';
-import RegisterForm from './pages/RegisterForm.jsx';
+import LoginForm from './pages/Login';
+import RegisterForm from './pages/RegisterForm';
+import Profile from './pages/Profile';
+import Search from './pages/Search';
 
-import NavigationBar from './components/NavigationBar';
-import Sidebar from './components/Sidebar';
+import { AuthProvider } from './context/AuthProvider';
+import RequireAuth from './components/RequireAuth';
+
+import PrivateRoute from './utils/PrivateRoute';
 
 import './index.css';
 
 const App = () => {
   return (
     <div className="app bg-slate-950 text-white">
-      <Router>
-        
-      <NavigationBar />
-      <Sidebar />
-          <main className="bg-slate-950">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/register" element={<RegisterForm />} />
-            </Routes>
-          </main>
-      </Router>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            {/* public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/user/:username" element={<Profile />} />
+
+            {/* protected  routes */}
+            <Route element={<RequireAuth />} >
+            <Route path="/profile" element={<Profile />} />
+            </Route>
+            {/* <Route path="/profile" element={<Profile />} /> */}
+
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter >
     </div>
   );
 };

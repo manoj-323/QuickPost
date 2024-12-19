@@ -1,21 +1,30 @@
 import React from 'react';
 
-const Post = ({ post }) => {
+const Post = ({data}) => {
   return (
-    <div className="mx-auto md:w-2/3  text-white border p-4 mb-4 rounded-lg border-red-600 h-32 w-60 overflow-hidden">
-      <div className="flex items-center mb-4">
-        <img className="h-8 w-8 rounded-full mr-2" src="http://localhost:8000/profilePicture/default-pfp.png" alt="Profile" />
-        <p>{post.username}</p>
+    <>
+    {data.map((item, index)=>{
+      return <div className='post w-full p-2 mb-3 flex flex-col  text-left bg-[#1c1e21] border-b border-b-[#323334]' key={item.id}>
+        <div className='flex space-x-2 p-1'>
+          <img className='h-8 rounded-3xl'  src={item.image} alt="" />
+          <p className='inline-block w-full font-sans '>{item.username}</p>
+        </div>
+        <div className='flex flex-col'>
+          <div className='p-1 mb-1'>
+            {item.text}
+          </div>
+          <div className='p-1'>
+            <img className='h-42' src={item.image} alt="" />
+          </div>
+        </div>
+        <div className='flex justify-start space-x-2 pl-1'>
+          <button>like</button>
+          <button>comment</button>
+          <button>share</button>
+        </div>
       </div>
-      <div className="post-body mb-4">
-        <p>{post.text}</p>
-        {post.image && <img src={post.image} alt="Post image" className="w-full h-auto mt-2 rounded-lg object-cover" />}
-      </div>
-      <div className="post-footer flex justify-between mt-4">
-        <button className="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm">Like {post.upvote}</button>
-        <button className="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm">Comment</button>
-      </div>
-    </div>
+    })}
+    </>
   );
 };
 

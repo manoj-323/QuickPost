@@ -30,7 +30,7 @@ def populate_posts(n=20):
         user = random.choice(users)
         Post.objects.create(
             user=user,
-            text=fake.text(max_nb_chars=500),
+            text=fake.text(max_nb_chars=100),
         )
 
 def populate_comments(n=50):

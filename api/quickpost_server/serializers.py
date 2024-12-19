@@ -1,4 +1,4 @@
-from .models import Post, Comment, UserProfile
+from .models import Post, Comment, UserProfile, Followers
 
 from django.contrib.auth.models import User
 
@@ -8,12 +8,11 @@ from rest_framework.reverse import reverse
 
 
 
-
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = ('username', 'id')
+        # fields = '__all__'
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -21,9 +20,16 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('id', 'user', 'bio', 'profilePicture')
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'name', 'followers', 'user', 'bio', 'profilePicture')
 
+
+class FollowersSerializer(serializers.ModelSerializer):
+    follower = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    followed = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+
+    class Meta:
+        model = Followers
+        fields = ['follower', 'followed']
 
 class PostSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)  # Nested UserProfile data in Post

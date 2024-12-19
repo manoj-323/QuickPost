@@ -9,7 +9,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, RefreshToken
 from rest_framework.exceptions import ValidationError
 
-
+from quickpost_server.models import UserProfile
+from quickpost_server.serializers import UserProfileSerializer
 
 
 class RegisterView(APIView):
@@ -52,13 +53,17 @@ class RegisterView(APIView):
 
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)  
-        refresh_token = str(refresh)              
+        refresh_token = str(refresh)
+
+        profile = UserProfile.objects.get(user=user)
+        serializer = UserProfileSerializer(profile)            
 
         # Return the tokens in the response
         return Response({
             'message': 'User created successfully',
             'access': access_token,
             'refresh': refresh_token,
+            'user': serializer.data,
         }, status=status.HTTP_201_CREATED)
     
 
@@ -100,7 +105,17 @@ class LoginView(APIView):
             access_token = AccessToken.for_user(user)
             refresh_token = RefreshToken.for_user(user)
 
-            return Response({'access' : str(access_token), 'refresh' : str(refresh_token)}, status=status.HTTP_200_OK)
+            profile = UserProfile.objects.get(user=user)
+            serializer = UserProfileSerializer(profile)
+
+            return Response({'access' : str(access_token), 'refresh' : str(refresh_token), 'user' : serializer.data}, status=status.HTTP_200_OK)
 
 
         return Response({'error': 'Invalid username or password.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"message":"Logged out successfully"})
+        response.delete_cookie('refresh_token')
+        return response
