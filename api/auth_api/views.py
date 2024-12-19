@@ -51,6 +51,8 @@ class RegisterView(APIView):
         user = User.objects.create_user(username=username, password=password)
         user.save()
 
+        print(user)
+
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)  
         refresh_token = str(refresh)

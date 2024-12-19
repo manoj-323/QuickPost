@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
+import useAuth from '../hooks/useAuth';
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { setAuth, isAuthenticated, setIsAuthenticated } = useAuth();
+
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
+  const logout = () => {
+    console.log('logging out');
+    setAuth({});
+    setIsAuthenticated(false);
+  }
+
   return (
-    <div className="relative inline-block text-left border">
+    <div className="relative inline-block text-left">
       <button
         onClick={toggleDropdown}
         className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm p-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none"
       >
+        more
         <svg
           className="-mr-1 ml-2 h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
@@ -28,29 +38,13 @@ const Dropdown = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div className="absolute right-0 mt-2 w-20 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <a
-              href="#option1"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              role="menuitem"
-            >
-              Option 1
-            </a>
-            <a
-              href="#option2"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              role="menuitem"
-            >
-              Option 2
-            </a>
-            <a
-              href="#option3"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              role="menuitem"
-            >
-              Option 3
-            </a>
+            <button className="p-2 hover:bg-slate-700 hover:text-white text-gray-700 rounded w-full" type="button" onClick={() => {
+              logout();
+            }}>
+              Logout
+            </button>
           </div>
         </div>
       )}

@@ -2,10 +2,13 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import Dropdown from './DropDown';
+import useAuth from '../hooks/useAuth';
 
 function NavigationBar() {
   const location = useLocation();
   const currentPath = location.pathname;
+
+  const { isAuthenticated } = useAuth();
 
   const getPathLabel = (path) => {
     const pathLabels = {
@@ -33,7 +36,7 @@ function NavigationBar() {
 
       {/* Right side actions */}
       <div className="flex items-center space-x-4">
-        {(currentPath !== '/login') && (
+        {(currentPath !== '/login' &&!isAuthenticated ) && (
           <Link
             to="/login"
             className="bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg text-white text-sm"

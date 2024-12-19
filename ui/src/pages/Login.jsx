@@ -18,7 +18,7 @@ function LoginForm() {
   const location = useLocation();
   const from = location.state?.from.pathname || "/";
 
-  const { setAuth } = useAuth();
+  const { setAuth, setIsAuthenticated } = useAuth();
 
 
   useEffect(() => {
@@ -33,16 +33,15 @@ function LoginForm() {
     e.preventDefault();
     try {
       const { data } = await axios.post('http://127.0.0.1:8000/auth/login/', formData);
-      localStorage.setItem('access_token', data.access);
-      localStorage.setItem('refresh_token', data.refresh);
-      console.log(data);
       
       // Set auth context with user data (you may want to adjust based on API response)
-      setAuth({ accessToken: data.access, user: data.user });
-
+      setAuth({ accessToken: data.access, refreshToken: data.refresh, user: data.user });
+      setIsAuthenticated(true);
+      
       navigate(from, {replace : true}); // Redirect to home page on successful login
     } catch (err) {
       setError('Invalid credentials');
+      setIsAuthenticated(false);
       console.error(err);
     }
   };
@@ -53,7 +52,7 @@ function LoginForm() {
       <div className="flex flex-grow">
         <Sidebar />
         <div className="m-auto p-6 rounded-lg shadow-lg w-full max-w-md bg-slate-950">
-          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-4 text-black">
             <input
               className="p-2 rounded-md border border-gray-500 bg-red-100"
               type="text"

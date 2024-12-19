@@ -1,64 +1,62 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import NavigationBar from '../components/NavigationBar';
 import Sidebar from '../components/Sidebar';
-import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const RegisterForm = () => {
-    // States to handle form data, success, and error messages
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
-
+    const [formData, setFormData] = useState({ username: '', password: '' });
+    const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState('');
+
     const navigate = useNavigate();
-    const { fetchUser } = useAuth();
+    const { auth, setAuth } = useAuth(); // Getting auth from the context
 
     // Handle form input changes
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            console.log('Registering with data:', formData);
 
-        console.log('submitting', formData);
-        axios.post('http://127.0.0.1:8000/auth/register/', formData)
-            .then((response) => {
-                localStorage.setItem('access_token', response.data.access);
-                localStorage.setItem('refresh_token', response.data.refresh); // Storing refresh token too
-                setSuccess(true);
-                setError('');
-                fetchUser().then(()=>{
-                    navigate('/profile');
-                })
-            })
-            .catch((err) => {
-                console.log('Error: ', err);
-                setError('Registration failed. Please try again.');
-                setSuccess(false);
+            // Send registration request
+            const { data } = await axios.post('http://127.0.0.1:8000/auth/register/', formData);
+            setSuccess(true);
+            setError(null);
+
+            console.log('Registration response:', data);
+            // Set new auth data
+            setAuth({
+                accessToken: data.access,
+                refreshToken: data.refresh,
+                user: data.user
             });
+
+            // Redirect to profile page after successful registration
+            navigate('/profile');
+        } catch (err) {
+            setError('Registration failed. Please try again.');
+            setSuccess(false);
+            console.error('Error during registration:', err);
+        }
     };
 
-    return (<div className="flex flex-col h-screen">
-        <NavigationBar />
-
-        <div className="flex flex-grow">
-            <div className="sm:w-16 w-full sm:h-full h-16 sm:relative absolute bottom-0 left-0 sm:flex flex-col items-center sm:space-y-5 space-x-7 sm:space-x-0 bg-[#0A0A0A] text-white shadow-lg">
+    return (
+        <div className="flex flex-col h-screen">
+            <NavigationBar />
+            <div className="flex flex-grow">
                 <Sidebar />
-            </div>
-
-
-            <div className="border m-auto p-6 rounded-lg shadow-lg w-full max-w-md overflow-hidden bg-slate-950">
-                <form onSubmit={handleSubmit} className="text-black flex flex-col space-y-4">
-                    <div className="flex justify-center">
+                <div className="m-auto p-6 rounded-lg shadow-lg w-full max-w-md bg-slate-950">
+                    <form onSubmit={handleSubmit} className="flex flex-col space-y-4 text-black">
                         <input
-                            className="p-2 rounded-md border border-gray-500 bg-red-100 w-full"
+                            className="p-2 rounded-md border border-gray-500 bg-red-100"
                             type="text"
                             name="username"
                             value={formData.username}
@@ -66,11 +64,8 @@ const RegisterForm = () => {
                             required
                             placeholder="Username"
                         />
-                    </div>
-
-                    <div className="flex justify-center">
                         <input
-                            className="p-2 rounded-md border border-gray-500 bg-red-100 w-full"
+                            className="p-2 rounded-md border border-gray-500 bg-red-100"
                             type="password"
                             name="password"
                             value={formData.password}
@@ -78,23 +73,21 @@ const RegisterForm = () => {
                             required
                             placeholder="Password"
                         />
-                    </div>
-
-                    {success && <p className="text-green-500 text-center">Registration successful!</p>}
-                    {error && <p className="text-red-500 text-center">{error}</p>}
-
-                    <div className="flex justify-center">
                         <button
                             type="submit"
-                            className="bg-blue-600 text-white p-2 rounded-md w-full hover:bg-blue-700 transition duration-200"
+                            className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-200"
                         >
                             Register
                         </button>
+                    </form>
+                    {success && <p className="text-green-500 text-center">Registration successful!</p>}
+                    {error && <p className="text-red-500 text-center">{error}</p>}
+                    <div className="text-center mt-4">
+                        <Link to="/login" className="text-blue-600">Already have an account? Login</Link>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
     );
 };
 

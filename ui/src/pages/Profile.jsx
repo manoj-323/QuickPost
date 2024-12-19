@@ -5,6 +5,7 @@ import NavigationBar from '../components/NavigationBar';
 import { useParams, useNavigate, replace, useLocation } from 'react-router-dom';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import useRefreshToken from '../hooks/useRefreshToken';
+import useAuth from '../hooks/useAuth';
 
 const Profile = () => {
 
@@ -13,7 +14,13 @@ const Profile = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const refresh  = useRefreshToken()
+  const { setAuth, isAuthenticated, setIsAuthenticated } = useAuth();
+
+  const logout = () => {
+    console.log('logging out');
+    setAuth({});
+    setIsAuthenticated(false);
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -34,7 +41,6 @@ const Profile = () => {
       }
     }
     getProfile();
-    // refresh();
 
     return () => {
       isMounted = false; // Cleanup flag
@@ -62,11 +68,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
-      {/* Button to logout */}
-      {/* <button className="bg-blue-700 p-2 text-white rounded" type="button" onClick={logout}> */}
-      Logout
-      {/* </button> */}
     </div>
   );
 };
