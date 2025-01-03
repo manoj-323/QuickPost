@@ -114,10 +114,3 @@ class LoginView(APIView):
 
 
         return Response({'error': 'Invalid username or password.'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-class LogoutView(APIView):
-    def post(self, request):
-        response = Response({"message":"Logged out successfully"})
-        response.delete_cookie('refresh_token')
-        return response

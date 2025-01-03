@@ -13,6 +13,7 @@ import RequireAuth from './components/RequireAuth';
 import PrivateRoute from './utils/PrivateRoute';
 
 import './index.css';
+import MakePost from './components/MakePost';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
             {/* protected  routes */}
             <Route element={<RequireAuth />} >
             <Route path="/profile" element={<Profile />} />
+            <Route path="/post" element={<MakePost />} />
             </Route>
             {/* <Route path="/profile" element={<Profile />} /> */}
 

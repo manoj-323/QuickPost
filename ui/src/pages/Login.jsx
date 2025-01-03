@@ -33,12 +33,15 @@ function LoginForm() {
     e.preventDefault();
     try {
       const { data } = await axios.post('http://127.0.0.1:8000/auth/login/', formData);
-      
+
       // Set auth context with user data (you may want to adjust based on API response)
       setAuth({ accessToken: data.access, refreshToken: data.refresh, user: data.user });
       setIsAuthenticated(true);
-      
-      navigate(from, {replace : true}); // Redirect to home page on successful login
+
+      localStorage.setItem('accessToken' , data.access);
+      localStorage.setItem('refreshToken' , data.refresh);
+
+      navigate(from, { replace: true }); // Redirect to home page on successful login
     } catch (err) {
       setError('Invalid credentials');
       setIsAuthenticated(false);

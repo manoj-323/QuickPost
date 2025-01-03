@@ -8,9 +8,10 @@ const useAxiosPrivate = () => {
     const { auth } = useAuth();
 
     useEffect(() => {
+
         const requestIntercept = axiosPrivate.interceptors.request.use(
             (config) => {
-                console.log('Request Interceptor Triggered');
+                // console.log('adding access token to headers')
                 if (!config.headers['Authorization']) {
                     config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
                 }
@@ -22,12 +23,9 @@ const useAxiosPrivate = () => {
         const responseIntercept = axiosPrivate.interceptors.response.use(
             (response) => response,
             async (error) => {
-                console.log('Response Interceptor Triggered');
                 const prevRequest = error?.config;
 
                 if (error?.response?.status === 401 && !prevRequest?.sent) {
-                    console.log('401 Error: Retrying request...');
-                    
                     prevRequest.sent = true; // Prevent infinite retry loops
                     
                     try {
@@ -38,7 +36,6 @@ const useAxiosPrivate = () => {
                         // Retry the request with the updated token
                         return axiosPrivate(prevRequest);
                     } catch (refreshError) {
-                        console.error('Token Refresh Failed:', refreshError);
                         return Promise.reject(refreshError);
                     }
                 }

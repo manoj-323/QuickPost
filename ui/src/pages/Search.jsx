@@ -71,7 +71,7 @@ function Search() {
               <ul className="text-white overflow-y-scroll no-scrollbar w-full rounded-sm">
                 {searchResults.length > 0 ? (
                   searchResults.map((user) => (
-                    <Link to={`/user/${user.username}`} key={user.username}> {/* Ensure 'username' is unique */}
+                    <Link to={`/user/${user.username}`} key={user.username}>
                       <li className="border p-1 border-gray-600 rounded-sm px-4 py-1">
                         {user.username}
                       </li>

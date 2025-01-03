@@ -3,12 +3,14 @@ import axios from 'axios';
 import Post from '../components/Post';
 import Sidebar from '../components/Sidebar';
 import NavigationBar from '../components/NavigationBar';
+import useAuth from "../hooks/useAuth";
 
 export default function Home() {
   const [data, setData] = useState([]);
   const [nextUrl, setNextUrl] = useState('http://127.0.0.1:8000/feed/');
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const { auth } = useAuth();
 
   async function fetchData(url) {
     if (loading || !hasMore) return;
@@ -16,7 +18,20 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await axios.get(url);
+      let response;
+
+      if (auth?.accessToken) {
+        response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${auth?.accessToken}`
+          }
+        });
+        console.log('have access token')
+      } else {
+        response = await axios.get(url);
+        console.log('dont have access token')
+      }
+      console.log(response.data.results)
       setNextUrl(response.data.next);
       if (!nextUrl) {
         setHasMore(false);
@@ -69,14 +84,18 @@ export default function Home() {
           <Sidebar />
         </div>
 
+        {/* main block */}
         <div className="flex flex-grow p-1">
-          <div className="scrollable-container bg-[#1c1e21] rounded-3xl p-1 mx-auto text-center overflow-y-auto no-scrollbar pb-12 border border-[#323232] 
-                          w-[90%] md:w-2/3 max-h-[88vh]">
-            <Post data={data} />
-            {!hasMore && <p>No more posts available</p>}
+          <div className="scrollable-container bg-[#1c1e21] rounded-3xl p-4 mx-auto text-center overflow-y-auto no-scrollbar pb-12 border border-[#323232] 
+                w-[400px] max-w-2sm md:w-sm max-h-[88vh]">
+            <Post data={data} setData={setData} />
+            {(!hasMore == 0 || data == []) && <p>No posts available</p>}
             {loading && <p>Loading...</p>}
           </div>
+
         </div>
+
+
       </div>
     </div>
   );
