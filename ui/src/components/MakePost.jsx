@@ -39,7 +39,7 @@ const MakePost = () => {
         }
 
         try {
-            const response = await privateAxios.post('http://127.0.0.1:8000/post/', formData,
+            const response = await privateAxios.post('posts/create/', formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'

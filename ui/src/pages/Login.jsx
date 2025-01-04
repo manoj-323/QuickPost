@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-import axios from 'axios';
+import axios from '../utils/axios';
 
 import NavigationBar from '../components/NavigationBar';
 import Sidebar from '../components/Sidebar';
@@ -32,7 +32,7 @@ function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://127.0.0.1:8000/auth/login/', formData);
+      const { data } = await axios.post('auth/login/', formData);
 
       // Set auth context with user data (you may want to adjust based on API response)
       setAuth({ accessToken: data.access, refreshToken: data.refresh, user: data.user });

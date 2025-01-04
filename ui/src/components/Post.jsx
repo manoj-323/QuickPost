@@ -23,7 +23,7 @@ const Post = ({ data, setData }) => {
     if (!auth.accessToken) return navigate('/login');
 
     try {
-      const { data } = await privateAxios.post(`${API_URL}/like/`, { post_id: postId });
+      const { data } = await privateAxios.post(`posts/like/`, { post_id: postId });
       setData((prevData) =>
         prevData.map((item) =>
           item.id === postId ? { ...item, upvote: data.upvote, is_liked: data.is_liked } : item
@@ -51,13 +51,13 @@ const Post = ({ data, setData }) => {
     if (!auth.accessToken) return navigate('/login');
 
     try {
-      await privateAxios.post(`${API_URL}/make-comment/`, {
+      await privateAxios.post(`comments/create/`, {
         post_id: postId,
         comment_text: userComment,
       });
 
       // Fetch new comments
-      const { data } = await axios.get(`${API_URL}/comments/?post_id=${postId}`);
+      const { data } = await axios.get(`comments/?post_id=${postId}`);
       setCommentBoxStates((prevStates) => ({
         ...prevStates,
         [postId]: {
@@ -86,7 +86,7 @@ const Post = ({ data, setData }) => {
     }
 
     try {
-      const { data } = await axios.get(`${API_URL}/comments/?post_id=${postId}`);
+      const { data } = await axios.get(`comments/?post_id=${postId}`);
       setCommentBoxStates((prevStates) => ({
         ...prevStates,
         [postId]: { isOpen: true, comments: data },

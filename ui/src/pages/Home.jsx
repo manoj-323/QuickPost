@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "../utils/axios";
 import Post from '../components/Post';
 import Sidebar from '../components/Sidebar';
 import NavigationBar from '../components/NavigationBar';
@@ -7,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 
 export default function Home() {
   const [data, setData] = useState([]);
-  const [nextUrl, setNextUrl] = useState('http://127.0.0.1:8000/feed/');
+  const [nextUrl, setNextUrl] = useState('posts/');
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const { auth } = useAuth();

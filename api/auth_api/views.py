@@ -9,8 +9,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, RefreshToken
 from rest_framework.exceptions import ValidationError
 
-from quickpost_server.models import UserProfile
-from quickpost_server.serializers import UserProfileSerializer
+from profiles.models import UserProfile
+from profiles.serializers import UserProfileSerializer
 
 
 class RegisterView(APIView):

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../utils/axios';
 
 import NavigationBar from '../components/NavigationBar';
 import Sidebar from '../components/Sidebar';
@@ -27,7 +27,7 @@ const RegisterForm = () => {
             console.log('Registering with data:', formData);
 
             // Send registration request
-            const { data } = await axios.post('http://127.0.0.1:8000/auth/register/', formData);
+            const { data } = await axios.post('/auth/register/', formData);
             setSuccess(true);
             setError(null);
 

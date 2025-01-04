@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import Sidebar from '../components/Sidebar';
-import axios from 'axios';
+import axios from '../utils/axios';
 import { Link } from 'react-router-dom';
+
 
 function Search() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,7 +37,7 @@ function Search() {
   const fetchSearchResults = async (query) => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/search/', { 'search_query': query });
+      const response = await axios.post('profiles/search/', { 'search_query': query });
       setSearchResults(response.data);
       localStorage.setItem('searchQuery', JSON.stringify(query));
       localStorage.setItem('searchResults', JSON.stringify(response.data));

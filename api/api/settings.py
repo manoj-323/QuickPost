@@ -53,7 +53,10 @@ INSTALLED_APPS = [
 
     # apps
     'auth_api',
-    'quickpost_server',
+    'profiles',
+    'posts',
+    'comments',
+    'followers',
 
     # third party
     'django_filters',

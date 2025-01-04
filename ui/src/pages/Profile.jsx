@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../utils/axios'
 import Sidebar from '../components/Sidebar';
 import NavigationBar from '../components/NavigationBar';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
@@ -45,9 +45,9 @@ const Profile = () => {
     try {
       let response;
       if (!profileData?.is_following) {
-        response = await axiosPrivate.post('http://localhost:8000/follow/', { followed_id });
+        response = await axiosPrivate.post('followers/follow/', { followed_id });
       } else {
-        response = await axiosPrivate.delete('http://localhost:8000/follow/', { data: { followed_id } });
+        response = await axiosPrivate.delete('followers/follow/', { data: { followed_id } });
       }
       setProfileData((prev) => ({
         ...prev,
@@ -61,7 +61,7 @@ const Profile = () => {
 
   const getFollowers = async () => {
     try {
-      const response = await axiosPrivate.get('http://localhost:8000/get-followers/', {
+      const response = await axiosPrivate.get('followers/followers/', {
         params: { user_id: profileData?.id }
       });
       setProfileData((prev) => ({
@@ -76,7 +76,7 @@ const Profile = () => {
 
   const getFollowing = async () => {
     try {
-      const response = await axiosPrivate.get('http://localhost:8000/get-following/', {
+      const response = await axiosPrivate.get('followers/following/', {
         params: { user_id: profileData?.id }
       });
       setProfileData((prev) => ({
@@ -100,15 +100,15 @@ const Profile = () => {
       try {
         let response;
         if (username && isAuthenticated) {
-          response = await axiosPrivate.get(`http://127.0.0.1:8000/user/${username}`, {
+          response = await axiosPrivate.get(`profiles/user/${username}/`, {
             signal: controller.signal,
           });
         } else if (username) {
-          response = await axios.get(`http://127.0.0.1:8000/user/${username}`, {
+          response = await axios.get(`profiles/user/${username}/`, {
             signal: controller.signal,
           });
         } else {
-          response = await axiosPrivate.get('http://127.0.0.1:8000/profile/', {
+          response = await axiosPrivate.get('profiles/me/', {
             signal: controller.signal,
           });
         }
@@ -129,9 +129,9 @@ const Profile = () => {
       let response;
       try {
         if (username) {
-          response = await axios.get(`http://127.0.0.1:8000/user/${username}/posts/`);
+          response = await axios.get(`posts/user/${username}/`);
         } else {
-          response = await axiosPrivate.get('http://127.0.0.1:8000/profile/posts/');
+          response = await axiosPrivate.get('posts/profile/');
         }
         setUserPosts(response.data);
       } catch (err) {
