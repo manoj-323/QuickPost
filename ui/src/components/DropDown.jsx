@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useAuth from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +40,20 @@ const Dropdown = () => {
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-20 origin-top-right rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <Link to='/login'>
+            <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+              <div className='p-2 hover:bg-slate-700 hover:text-white text-gray-700 rounded w-full'>
+                Login
+              </div>
+            </div>
+          </Link>
+          <Link to='/register' >
+            <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+              <div className='p-2 hover:bg-slate-700 hover:text-white text-gray-700 rounded w-full'>
+                Register
+              </div>
+            </div>
+          </Link>
           <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             <button className="p-2 hover:bg-slate-700 hover:text-white text-gray-700 rounded w-full" type="button" onClick={() => {
               logout();

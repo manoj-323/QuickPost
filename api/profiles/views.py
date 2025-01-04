@@ -64,7 +64,7 @@ class AuthenticatedUserProfileView(APIView):
         serializer = AuthenticatedUserProfileSerializer(profile, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def put(self, request):
         # Get the profile of the currently authenticated user
         user = request.user
         profile = UserProfile.objects.get(user=user)

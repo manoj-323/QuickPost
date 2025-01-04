@@ -17,7 +17,6 @@ function Search() {
     if (storedResults && storedQuery) {
       setSearchResults(JSON.parse(storedResults));
       setSearchQuery(JSON.parse(storedQuery));
-      console.log('Loaded stored data:', { storedQuery, storedResults });
     }
   }, []);
 

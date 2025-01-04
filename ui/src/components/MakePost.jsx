@@ -34,9 +34,9 @@ const MakePost = () => {
             formData.append('post_image', postImage);
         }
 
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-        }
+        // for (let [key, value] of formData.entries()) {
+        //     console.log(key, value);
+        // }
 
         try {
             const response = await privateAxios.post('posts/create/', formData,
@@ -46,7 +46,6 @@ const MakePost = () => {
                 }
                 }
             );
-            console.log("Post created:", response.data);
             alert("Post created successfully!");
 
             // Clear form data after successful post

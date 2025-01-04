@@ -29,9 +29,7 @@ export default function Home() {
         console.log('have access token')
       } else {
         response = await axios.get(url);
-        console.log('dont have access token')
       }
-      console.log(response.data.results)
       setNextUrl(response.data.next);
       if (!nextUrl) {
         setHasMore(false);
