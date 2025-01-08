@@ -185,8 +185,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 For queries, suggestions, or feedback, feel free to contact me at:  
 - **Name**: Manoj Kumar  
-- **LinkedIn**: [Manoj Kumar](https://www.linkedin.com/in/manoj-kumar-r323)  
-- **GitHub Profile**: [Manoj-323](https://github.com/manoj-323)  
+- **LinkedIn**: [Manoj Kumar](https://www.linkedin.com/in/manoj-kumar-r323)
 
 ---
 
