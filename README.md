@@ -195,10 +195,4 @@ Planned features for future releases:
 1. Add user profile customization.  
 2. Implement post liking and commenting.  
 3. Improve search functionality with advanced filters.  
-4. Enable multimedia (images/videos) in posts.  
-
----
-
-Enjoy using **QuickPost**! Happy blogging! 😊
-
---- 
+4. Enable multimedia (images/videos) in posts. 
